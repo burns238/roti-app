@@ -1,9 +1,41 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import CardList from './CardList';
 
 class App extends Component {
+
+  componentDidMount(){
+    var url = "https://api.scryfall.com/cards/search?q=cube:vintage"
+    fetch(url).then(
+      response => response.json().then(
+        json => {
+          var cards2 = json.data.map(card => card.name )
+          console.log(cards2)
+          this.setState({cards: cards2})
+        }
+      )
+    )
+
+  }
+
+  constructor() {
+    super()
+    this.state = {
+      cards:[]
+    }
+
+  }
+
+
   render() {
+    var firstCard = ""
+    if (this.state.cards.count !== 0) {
+      firstCard = this.state.cards[0]
+    }
+
+    console.log(firstCard)
+
     return (
       <div className="App">
         <header className="App-header">
@@ -11,14 +43,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <CardList cards={this.state.cards}/>
         </header>
       </div>
     );
