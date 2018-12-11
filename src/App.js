@@ -2,46 +2,51 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import CardList from './CardList';
+import fetchCards from './Scryfall'
 
 class App extends Component {
 
   componentDidMount(){
-    var url = "https://api.scryfall.com/cards/search?q=cube:vintage"
-    fetch(url).then(
-      response => response.json().then(
-        json => {
-          var cards2 = json.data.map(card => card.name )
-          console.log(cards2)
-          this.setState({cards: cards2})
-        }
-      )
-    )
 
-  }
+    function promiseStuff(that, json, cards) {
+        cards = cards.concat(json.data.filter(card => card.image_uris))
+        that.setState({cards: cards})
+        if (json.has_more) {
+          fetch(json.next_page).then(response => 
+            response.json().then(json2 => {
+              promiseStuff(that, json2, cards)
+            })
+          ) 
+        }
+      }
+
+      var url = "https://api.scryfall.com/cards/search?q=cube:vintage"
+      var cards = []
+      fetch(url).then(response => 
+        response.json().then(json => {
+          promiseStuff(this, json, cards)
+        }
+        )
+      )
+    } 
 
   constructor() {
     super()
     this.state = {
       cards:[]
     }
-
   }
 
 
   render() {
-    var firstCard = ""
-    if (this.state.cards.count !== 0) {
-      firstCard = this.state.cards[0]
-    }
-
-    console.log(firstCard)
 
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Magicthegathering-logo.svg" className="App-logo" alt="logo" />
+          <img src="https://i.imgur.com/iAMYae4.png" className="App-logo" alt="logo" />
           <p>
-            Edit <code>src/App.js</code> and save to reload.
+            (Z->)90° - (E-N²W)90°t=1
           </p>
           <CardList cards={this.state.cards}/>
         </header>
