@@ -28,8 +28,6 @@ class App extends Component {
         items: [...prevState.items, ...data.data],
       }));
 
-      console.log(this.state);
-
       // if there is more data to fetch, call getData again.
       if (data.has_more) {
         this.getData(data.next_page);
