@@ -1,45 +1,48 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
-import CardList from './CardList';
+// import CardList from './CardList';
 import fetchCards from './Scryfall'
 
+const CardListItem = props => (
+    <img src={props.image_uris && props.image_uris.small} alt="" />
+);
+
+const CardList = props =>
+  props.items.map(item => <CardListItem key={item.id} {...item} />);
+
+
 class App extends Component {
+  state = {
+    items: [],
+  };
 
-  componentDidMount(){
+  getData(url) {
+    axios.get(url).then(result => {
+      const { data } = result;
 
-    function promiseStuff(that, json, cards) {
-        cards = cards.concat(json.data.filter(card => card.image_uris))
-        that.setState({cards: cards})
-        if (json.has_more) {
-          fetch(json.next_page).then(response => 
-            response.json().then(json2 => {
-              promiseStuff(that, json2, cards)
-            })
-          ) 
-        }
+      // update the state.
+      // state is updated in a non-mutating way combining existing data with new data.
+      this.setState(prevState => ({
+        items: [...prevState.items, ...data.data],
+      }));
+
+      console.log(this.state);
+
+      // if there is more data to fetch, call getData again.
+      if (data.has_more) {
+        this.getData(data.next_page);
       }
-
-      var url = "https://api.scryfall.com/cards/search?q=cube:vintage"
-      var cards = []
-      fetch(url).then(response => 
-        response.json().then(json => {
-          promiseStuff(this, json, cards)
-        }
-        )
-      )
-    } 
-
-  constructor() {
-    super()
-    this.state = {
-      cards:[]
-    }
+    });
   }
 
+  componentDidMount(){
+    const initialUrl = 'https://api.scryfall.com/cards/search?q=cube:vintage';
+    this.getData(initialUrl);
+  } 
 
   render() {
-
     return (
       <div className="App">
         <header className="App-header">
@@ -48,8 +51,8 @@ class App extends Component {
           <p>
             (Z->)90° - (E-N²W)90°t=1
           </p>
-          <CardList cards={this.state.cards}/>
         </header>
+        <CardList items={this.state.items} />
       </div>
     );
   }
