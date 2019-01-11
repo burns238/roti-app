@@ -1,36 +1,33 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "axios";
 
 const Cube = props => {
-	return (
-		<div>
-		<a href={props.id}>
-		  <img src={props.img} height="400"/>
-		  {props.title}
-		  </a>
-		</div>
-		)
-}
+  return (
+    <div>
+      <a href={props.id}>
+        <img src={props.img} height="400" alt="{props.title}" />
+        {props.title}
+      </a>
+    </div>
+  );
+};
 
 const CubeList = props => {
   return props.cubes.map(item => <Cube key={item.title} {...item} />);
-}
-
+};
 
 class CubeListContainer extends React.Component {
-
   state = {
     cubes: []
   };
 
-  componentDidMount(){
-    const initialUrl = 'http://172.31.32.90:5000/mock/cubes/';
+  componentDidMount() {
+    const initialUrl = "http://172.31.32.90:5000/mock/cubes/";
     this.getData(initialUrl);
-  } 
+  }
 
   getData(url) {
     axios.get(url).then(result => {
-
       // update the state.
       // state is updated in a non-mutating way combining existing data with new data.
       this.setState({
@@ -51,7 +48,6 @@ class CubeListContainer extends React.Component {
       </div>
     );
   }
-
 }
 
-export default CubeListContainer; 
+export default CubeListContainer;
