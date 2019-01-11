@@ -3,18 +3,28 @@ import axios from 'axios';
 
 const Cube = props => {
 	return (
-		<div>
-		<a href={props.id}>
-		  <img src={props.img} height="400"/>
-		  {props.title}
+		<div className="col-md-4 mt-2 mb-2">
+	    <a href={props.id}>
+        <img src={props.img} height="30"/>
+		    {props.title}      
 		  </a>
 		</div>
-		)
+	)
 }
 
-const CubeList = props => {
-  return props.cubes.map(item => <Cube key={item.title} {...item} />);
-}
+const CubeList = (props) => {
+  return (
+    <div className="row">
+      {props.cubes.map(item => {
+        return(
+          <Cube 
+            key={item.title} {...item} 
+          />
+        );
+      })}
+    </div>
+  )
+};
 
 
 class CubeListContainer extends React.Component {
@@ -24,7 +34,7 @@ class CubeListContainer extends React.Component {
   };
 
   componentDidMount(){
-    const initialUrl = 'http://172.31.32.90:5000/mock/cubes/';
+    const initialUrl = 'http://localhost:5000/mock/cubes/';
     this.getData(initialUrl);
   } 
 
@@ -46,7 +56,7 @@ class CubeListContainer extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <CubeList cubes={this.state.cubes} />
       </div>
     );

@@ -54,7 +54,7 @@ class CardGetter extends React.Component {
   }
 
   componentDidMount(){
-    const initialUrl = 'http://172.31.32.90:5000/mock/cubes/' + this.props.id;
+    const initialUrl = 'http://localhost:5000/mock/cubes/' + this.props.id;
     this.getData(initialUrl);
   } 
 
