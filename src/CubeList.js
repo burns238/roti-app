@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "axios";
 
 const Cube = props => {
+
 	return (
 		<div className="col-md-4 mt-2 mb-2">
 	    <a href={props.id}>
@@ -26,21 +27,18 @@ const CubeList = (props) => {
   )
 };
 
-
 class CubeListContainer extends React.Component {
-
   state = {
     cubes: []
   };
 
-  componentDidMount(){
-    const initialUrl = 'http://localhost:5000/mock/cubes/';
+  componentDidMount() {
+    const initialUrl = "http://172.31.32.90:5000/mock/cubes/";
     this.getData(initialUrl);
-  } 
+  }
 
   getData(url) {
     axios.get(url).then(result => {
-
       // update the state.
       // state is updated in a non-mutating way combining existing data with new data.
       this.setState({
@@ -61,7 +59,6 @@ class CubeListContainer extends React.Component {
       </div>
     );
   }
-
 }
 
-export default CubeListContainer; 
+export default CubeListContainer;
