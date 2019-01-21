@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./App.css";
 // import CardList from './CardList';
+import AppNavBar from "./AppNavBar"
 import CubeListContainer from "./CubeList";
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -72,14 +73,25 @@ class CardGetter extends React.Component {
       </div>
     );
   }
-}
+};
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <div>
-          <Route path="/cubes" component={CubeListContainer} />
+          <Route
+            path="/"
+            component={AppNavBar}
+          />
+          <Route
+            path="/" exact
+            component={CubeListContainer}
+          />
+          <Route 
+            path="/cubes"
+            component={CubeListContainer} 
+          />
           <Route
             path="/cubes/:id"
             component={props => <CardGetter id={props.match.params.id} />}

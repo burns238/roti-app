@@ -5,7 +5,7 @@ const Cube = props => {
 
 	return (
 		<div className="col-md-4 mt-2 mb-2">
-	    <a href={props.id}>
+	    <a href={"/cubes/" + props.id}>
         <img src={props.img} height="30"/>
 		    {props.title}      
 		  </a>
